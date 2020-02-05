@@ -13,8 +13,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
-import sun.jvm.hotspot.utilities.IntArray
-import kotlin.math.log
 
 
 /**
@@ -77,8 +75,11 @@ class MainActivity : Activity(), View.OnClickListener {
 
     // Start Auth_with_google
     private fun onLoggedIn(googleSignInAccount: GoogleSignInAccount){
-        val intent = Intent(this, ProfileActivity::class.java)
-        intent.putExtra(ProfileActivity.GOOGLE_ACCOUNT, googleSignInAccount)
+        val intent = Intent(this, DreadManeMain::class.java)
+        intent.putExtra(DreadManeMain.GOOGLE_ACCOUNT, googleSignInAccount)
+
+        startActivity(intent)
+        finish()
     }
 
     // [START signin]
