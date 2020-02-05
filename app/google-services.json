@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1086624895574",
+    "firebase_url": "https://dreadmane-73ea9.firebaseio.com",
+    "project_id": "dreadmane-73ea9",
+    "storage_bucket": "dreadmane-73ea9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1086624895574:android:cbb651616c6ecabf0f61f7",
+        "android_client_info": {
+          "package_name": "com.example.dreadmane"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1086624895574-bh8op5obd7aj3vf7epourgpg28f11ibl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dreadmane",
+            "certificate_hash": "f968e63af63ad34d6e1e26341f702fc30f285f6e"
+          }
+        },
+        {
+          "client_id": "1086624895574-geordr859f75a86md3jpj7bc63q3cpqg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGU0u39Q4VCHgZuMFZcAM3scMWx_T7jKI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1086624895574-geordr859f75a86md3jpj7bc63q3cpqg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

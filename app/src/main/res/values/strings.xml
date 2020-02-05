@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">DreadMane</string>
+    <string name="disconnect">disconnect</string>
+    <string name="sign_out">sign out</string>
+    <string name="signed_out">signed out</string>
+    <string name="google_title_text">Titre text</string>
+
+    <string name="google_status_fmt">Google User: %s</string>
+    <string name="firebase_status_fmt">Firebase UID: %s</string>
+</resources>
