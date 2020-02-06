@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DreadMane</string>
+    <string name="app_name">Dread Mane</string>
     <string name="disconnect">disconnect</string>
     <string name="sign_out">sign out</string>
     <string name="signed_out">signed out</string>
