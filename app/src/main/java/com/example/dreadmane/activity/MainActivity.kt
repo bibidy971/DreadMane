@@ -1,4 +1,4 @@
-package com.example.dreadmane
+package com.example.dreadmane.activity
 
 import android.app.Activity
 import android.content.Intent
@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.example.dreadmane.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -22,7 +23,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : Activity(), View.OnClickListener {
 
-    private val TAG = "GoogleActivity"
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var auth: FirebaseAuth
 
@@ -42,6 +42,11 @@ class MainActivity : Activity(), View.OnClickListener {
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
+        // [START initialize_auth]
+        // Initialize Firebase Auth
+        auth = FirebaseAuth.getInstance()
+        // [END initialize_auth]
+
     }
 
     public override fun onStart() {
@@ -50,7 +55,7 @@ class MainActivity : Activity(), View.OnClickListener {
         val alreadyLoggedAccount : GoogleSignInAccount? = GoogleSignIn.getLastSignedInAccount(this)
         if (alreadyLoggedAccount != null) {
             Toast.makeText(this, "Already Logged In", Toast.LENGTH_SHORT).show()
-            onLoggedIn(alreadyLoggedAccount!!)
+            onLoggedIn(alreadyLoggedAccount)
         }
         else Log.d(TAG,"Not logged in")
     }
@@ -58,16 +63,15 @@ class MainActivity : Activity(), View.OnClickListener {
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode == Activity.RESULT_OK)
-        {
-            when(requestCode){
-                101 -> {
-                    val task = GoogleSignIn.getSignedInAccountFromIntent(data);try {
-                        val account = task.getResult(ApiException::class.java)
-                        onLoggedIn(account!!)
-                    }catch (e: ApiException){
-                        Log.w(TAG, "Google sign in failed", e)
-                    }
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        when(requestCode){
+            RC_SIGN_IN -> {
+                val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+                try {
+                    val account = task.getResult(ApiException::class.java)
+                    onLoggedIn(account!!)
+                }catch (e: ApiException){
+                    Log.w(TAG, "Google sign in failed", e)
                 }
             }
         }
@@ -85,7 +89,7 @@ class MainActivity : Activity(), View.OnClickListener {
     // [START signin]
     private fun signIn() {
         val signInIntent = googleSignInClient.signInIntent
-        startActivityForResult(signInIntent, 101)
+        startActivityForResult(signInIntent, RC_SIGN_IN)
     }
     // [END signin]
 
@@ -93,6 +97,11 @@ class MainActivity : Activity(), View.OnClickListener {
         when(p0?.id){
             R.id.sign_in_button -> signIn()
         }
+    }
+
+    companion object{
+        private const val RC_SIGN_IN = 9001
+        private const val TAG = "GoogleActivity"
     }
 
 
