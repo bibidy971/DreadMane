@@ -1,8 +1,8 @@
 package com.example.dreadmane.activity
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.dreadmane.R
 import com.example.dreadmane.fragments.BlogFragment
@@ -15,26 +15,31 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.dread_mane_main.*
-import kotlinx.android.synthetic.main.profile_utilisateur.*
 
 
-class DreadManeMain : AppCompatActivity(), View.OnClickListener {
+class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack {
 
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var auth: FirebaseAuth
+
+    companion object {
+        const val GOOGLE_ACCOUNT = "google_account"
+        private const val TAG = "DreadManeActivity"
+    }
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dread_mane_main)
 
+        val googleSignInAccout = intent.getParcelableExtra<GoogleSignInAccount>(GOOGLE_ACCOUNT)
+
+        eMailUser = googleSignInAccout.email.toString()
+        nameUser = googleSignInAccout.displayName.toString()
+        photoUser = googleSignInAccout.photoUrl
+
         initFragments(savedInstanceState)
-
-        //initGoogleSign()
-
-        //sign_out.setOnClickListener(this)
-        //setDataOnView()
+        initGoogleSign()
 
     }
 
@@ -63,7 +68,6 @@ class DreadManeMain : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initFragments(savedInstanceState: Bundle?){
-
         setSupportActionBar(toolbar)
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
@@ -72,12 +76,9 @@ class DreadManeMain : AppCompatActivity(), View.OnClickListener {
             supportFragmentManager.beginTransaction().replace(R.id.container, fragment, fragment.javaClass.getSimpleName())
                 .commit()
         }
-
-
     }
 
     private fun initGoogleSign(){
-
         // [START config_signin]
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -94,27 +95,11 @@ class DreadManeMain : AppCompatActivity(), View.OnClickListener {
         // [END initialize_auth]
     }
 
-    private fun setDataOnView(){
 
-        val googleSignInAccout = intent.getParcelableExtra<GoogleSignInAccount>(GOOGLE_ACCOUNT)
 
-        /*Picasso.get().load(googleSignInAccout.photoUrl).centerInside().fit().into(profile_image)
-        profile_text.text = googleSignInAccout.displayName
-        profile_email.text = googleSignInAccout.email*/
-    }
-
-    companion object {
-        const val GOOGLE_ACCOUNT = "google_account"
-        private const val TAG = "DreadManeActivity"
-    }
-
-    override fun onClick(p0: View?) {
-        when(p0?.id){
-            R.id.sign_out -> signOut()
-        }
-    }
 
     private fun signOut() {
+        auth.signOut()
         googleSignInClient.signOut()
             .addOnCompleteListener(this, OnCompleteListener<Void?> {
                 val intent = Intent(this, MainActivity::class.java)
@@ -122,6 +107,18 @@ class DreadManeMain : AppCompatActivity(), View.OnClickListener {
                 finish()
             })
     }
+
+    override var eMailUser: String = ""
+    override var nameUser: String = ""
+    override var photoUser: Uri? = null
+
+    override fun disconnection() {
+        signOut()
+    }
+
+
+
 }
+
 
 
