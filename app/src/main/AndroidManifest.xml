@@ -5,23 +5,29 @@
 
     <dist:module dist:instant="true" />
 
-    <!-- <uses-permission android:name="android.permission.INTERNET" /> -->
-
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".activity.AddRdvActivity"
+            android:label="@string/title_activity_add_rdv"
+            android:parentActivityName=".activity.DreadManeMain"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.dreadmane.activity.DreadManeMain" />
+        </activity>
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.DreadManeMain">
-
-        </activity>
+        <activity android:name=".activity.DreadManeMain"></activity>
     </application>
 
 </manifest>

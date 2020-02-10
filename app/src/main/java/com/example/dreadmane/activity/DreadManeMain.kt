@@ -20,7 +20,7 @@ import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.dread_mane_main.*
 
 
-class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack {
+class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack, ChapterFragment.MyFragmentCallBack {
 
     private lateinit var authUser : FirebaseUser
     private lateinit var database: DatabaseReference
@@ -34,10 +34,13 @@ class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dread_mane_main)
 
-        authUser = intent.getParcelableExtra(GOOGLE_ACCOUNT)
+
+        authUser = FirebaseAuth.getInstance().currentUser!!
 
         eMailUser = authUser.email.toString()
         photoUser = authUser.photoUrl
+
+        userId = authUser.uid
 
         val name = authUser.displayName?.split(" ")
         nameUser = name?.get(0) ?: " "
@@ -65,7 +68,7 @@ class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack {
             }
         })*/
 
-        writeNewUser(authUser.uid, authUser.displayName.toString(), authUser.email.toString())
+        //writeNewUser(authUser.uid, authUser.displayName.toString(), authUser.email.toString())
 
 
 
@@ -78,9 +81,9 @@ class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Get Post object and use the values to update the UI
                 val post = dataSnapshot.getValue(User::class.java)
-
-                Toast.makeText(applicationContext, "database : ${post?.email}", Toast.LENGTH_LONG).show()
-
+                if (post?.uriPhoto != null ) {
+                    photoUser = Uri.parse(post.uriPhoto)
+                }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -91,15 +94,10 @@ class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack {
         }
         database.child("users").child(authUser.uid).addValueEventListener(postListener)
 
-        writeNewUser(authUser.uid, authUser.displayName.toString(), "charles")
+
 
     }
 
-
-    private fun writeNewUser(userId: String, name: String, email: String?) {
-        val user = User(name, email)
-        database.child("users").child(userId).setValue(user)
-    }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
         when (menuItem.itemId) {
@@ -168,14 +166,20 @@ class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack {
         finish()
     }
 
-    override var eMailUser: String = ""
-    override var nameUser: String = ""
+    override var eMailUser: String? = null
+    override var nameUser: String? = null
     override var photoUser: Uri? = null
 
     override fun disconnection() {
         signOut()
     }
 
+    override var userId: String? = null
+
+    override fun addRdvButton() {
+        val signInIntent : Intent = Intent(this, AddRdvActivity::class.java)
+        startActivity(signInIntent)
+    }
 
 
 }

@@ -65,8 +65,8 @@ class StoreFragment : Fragment(), View.OnClickListener{
     }
 
     interface MyFragmentCallBack{
-        var eMailUser : String
-        var nameUser : String
+        var eMailUser : String?
+        var nameUser : String?
         var photoUser : Uri?
         fun disconnection()
     }

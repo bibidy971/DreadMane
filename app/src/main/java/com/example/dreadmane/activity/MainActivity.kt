@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.example.dreadmane.R
+import com.example.dreadmane.data.User
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -16,8 +17,14 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_google.*
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
+import com.google.firebase.database.ValueEventListener as ValueEventListener
 
 
 /**
@@ -29,13 +36,13 @@ class MainActivity : Activity(), View.OnClickListener {
 
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var auth: FirebaseAuth
+    private lateinit var database: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         sign_in_button.setOnClickListener(this)
-
 
         // [START config_signin]
         // Configure Google Sign In
@@ -52,13 +59,15 @@ class MainActivity : Activity(), View.OnClickListener {
         auth = FirebaseAuth.getInstance()
         // [END initialize_auth]
 
+        database = FirebaseDatabase.getInstance().reference
+
     }
 
     public override fun onStart() {
         super.onStart()
 
         val currentUser = auth.currentUser
-        if (currentUser != null) onLoggedIn(currentUser) else Log.d(TAG,"Not logged in")
+        if (currentUser != null) onLoggedIn() else Log.d(TAG,"Not logged in")
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -89,11 +98,38 @@ class MainActivity : Activity(), View.OnClickListener {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
-                    val intent = Intent(this, DreadManeMain::class.java)
-                    intent.putExtra(DreadManeMain.GOOGLE_ACCOUNT, user)
 
+                    if (user != null) {
+                        val postListener = object : ValueEventListener{
+                            override fun onCancelled(p0: DatabaseError) {
+
+                            }
+
+                            override fun onDataChange(p0: DataSnapshot) {
+                                val post = p0.getValue(User::class.java)
+                                if (post?.username == null){
+                                    post?.username = acct.displayName
+                                }
+                                if (post?.email == null){
+                                    post?.email = acct.email
+                                }
+                                if (post?.admin == null){
+                                    post?.admin = false
+                                }
+                                if (post?.uriPhoto == null) {
+                                    post?.uriPhoto = acct.photoUrl.toString()
+                                    database.child("users").child(user.uid).setValue(post)
+                                }
+                            }
+                        }
+                        database.child("users").child(user.uid).addValueEventListener(postListener)
+                    }
+
+
+                    val intent = Intent(this, DreadManeMain::class.java)
                     startActivity(intent)
                     finish()
+
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
@@ -104,11 +140,9 @@ class MainActivity : Activity(), View.OnClickListener {
     // [END auth_with_google]
 
     // Start Auth_with_google
-    private fun onLoggedIn(googleSignInAccount: FirebaseUser){
+    private fun onLoggedIn(){
 
         val intent = Intent(this, DreadManeMain::class.java)
-        intent.putExtra(DreadManeMain.GOOGLE_ACCOUNT, googleSignInAccount)
-
         startActivity(intent)
         finish()
     }
