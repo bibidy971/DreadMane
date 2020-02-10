@@ -7,9 +7,9 @@
     <item
     android:id="@+id/navigation_chapter"
     android:icon="@drawable/ic_launcher_foreground"
-    android:title="Chapters"/>
+    android:title="RDV"/>
     <item
     android:id="@+id/navigation_store"
     android:icon="@drawable/ic_android_store"
-    android:title="Android Store"/>
+    android:title="Profile"/>
 </menu>
