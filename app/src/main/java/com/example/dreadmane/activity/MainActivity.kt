@@ -36,6 +36,7 @@ class MainActivity : Activity(), View.OnClickListener {
 
         sign_in_button.setOnClickListener(this)
 
+
         // [START config_signin]
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -57,11 +58,7 @@ class MainActivity : Activity(), View.OnClickListener {
         super.onStart()
 
         val currentUser = auth.currentUser
-        if (currentUser != null) {
-            Toast.makeText(this, "Already Logged In", Toast.LENGTH_SHORT).show()
-            onLoggedIn(currentUser)
-        }
-        else Log.d(TAG,"Not logged in")
+        if (currentUser != null) onLoggedIn(currentUser) else Log.d(TAG,"Not logged in")
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

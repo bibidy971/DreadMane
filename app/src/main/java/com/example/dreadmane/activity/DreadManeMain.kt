@@ -3,20 +3,27 @@ package com.example.dreadmane.activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.dreadmane.R
+import com.example.dreadmane.data.User
 import com.example.dreadmane.fragments.BlogFragment
 import com.example.dreadmane.fragments.ChapterFragment
 import com.example.dreadmane.fragments.StoreFragment
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.dread_mane_main.*
 
 
 class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack {
 
     private lateinit var authUser : FirebaseUser
+    private lateinit var database: DatabaseReference
 
     companion object {
         const val GOOGLE_ACCOUNT = "google_account"
@@ -36,6 +43,62 @@ class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack {
         nameUser = name?.get(0) ?: " "
 
         initFragments(savedInstanceState)
+
+        database = FirebaseDatabase.getInstance().reference
+
+        /*val database = FirebaseDatabase.getInstance()
+        val myRef = database.getReference("message")
+
+        myRef.setValue("Hello, World!")
+
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                val value = dataSnapshot.getValue(String::class.java)
+                Log.d(TAG, "Value is: $value")
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException())
+            }
+        })*/
+
+        writeNewUser(authUser.uid, authUser.displayName.toString(), authUser.email.toString())
+
+
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // Get Post object and use the values to update the UI
+                val post = dataSnapshot.getValue(User::class.java)
+
+                Toast.makeText(applicationContext, "database : ${post?.email}", Toast.LENGTH_LONG).show()
+
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+                // ...
+            }
+        }
+        database.child("users").child(authUser.uid).addValueEventListener(postListener)
+
+        writeNewUser(authUser.uid, authUser.displayName.toString(), "charles")
+
+    }
+
+
+    private fun writeNewUser(userId: String, name: String, email: String?) {
+        val user = User(name, email)
+        database.child("users").child(userId).setValue(user)
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
@@ -86,6 +149,20 @@ class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack {
 
     private fun signOut() {
         FirebaseAuth.getInstance().signOut()
+
+
+        // [START config_signin]
+        // Configure Google Sign In
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        // [END config_signin]
+
+        val googleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        googleSignInClient.signOut()
+
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
