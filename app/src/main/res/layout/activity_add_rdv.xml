@@ -26,13 +26,11 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <EditText
-            android:id="@+id/editTextDate"
+        <CalendarView
+            android:id="@+id/calendarView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:layout_marginTop="20dp"
-            android:inputType="date" />
+            android:minDate="01/01/2020" />
 
         <EditText
             android:id="@+id/editTextHeure"
@@ -47,6 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Button" />
+
     </LinearLayout>
 
 

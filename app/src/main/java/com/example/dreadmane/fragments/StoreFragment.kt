@@ -11,6 +11,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.dreadmane.R
+import com.example.dreadmane.data.User
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
 
 
@@ -19,6 +25,7 @@ class StoreFragment : Fragment(), View.OnClickListener{
     private lateinit var mCallBack : MyFragmentCallBack
     private lateinit var vEmailUser: TextView
     private lateinit var vNameUse : TextView
+    private val database = FirebaseDatabase.getInstance().reference
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -28,6 +35,20 @@ class StoreFragment : Fragment(), View.OnClickListener{
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        val authUser = FirebaseAuth.getInstance().currentUser!!
+
+        val postListener = object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                val post = p0.getValue(User::class.java)
+
+            }
+        }
+        database.child("users").child(authUser.uid).addListenerForSingleValueEvent(postListener)
 
         val result = inflater!!.inflate(R.layout.profile_utilisateur, container, false)
 

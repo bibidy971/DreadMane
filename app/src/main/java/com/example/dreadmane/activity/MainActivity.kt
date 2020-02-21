@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Toast
 import com.example.dreadmane.R
 import com.example.dreadmane.data.User
+import com.example.dreadmane.fragments.ChapterFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -15,16 +16,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_google.*
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
-import com.google.firebase.database.ValueEventListener as ValueEventListener
 
 
 /**
@@ -100,29 +95,36 @@ class MainActivity : Activity(), View.OnClickListener {
                     val user = auth.currentUser
 
                     if (user != null) {
+
+
+
                         val postListener = object : ValueEventListener{
                             override fun onCancelled(p0: DatabaseError) {
 
                             }
 
                             override fun onDataChange(p0: DataSnapshot) {
-                                val post = p0.getValue(User::class.java)
-                                if (post?.username == null){
-                                    post?.username = acct.displayName
-                                }
-                                if (post?.email == null){
-                                    post?.email = acct.email
-                                }
-                                if (post?.admin == null){
-                                    post?.admin = false
-                                }
-                                if (post?.uriPhoto == null) {
-                                    post?.uriPhoto = acct.photoUrl.toString()
-                                    database.child("users").child(user.uid).setValue(post)
+                                if (p0.exists()) {
+                                    val post = p0.getValue(User::class.java)
+                                    if (post?.username == null) {
+                                        post?.username = acct.displayName
+                                    }
+                                    if (post?.email == null) {
+                                        post?.email = acct.email
+                                    }
+                                    if (post?.admin == null) {
+                                        post?.admin = false
+                                    }
+                                    if (post?.uriPhoto == null) {
+                                        post?.uriPhoto = acct.photoUrl.toString()
+                                        database.child("users").child(user.uid).setValue(post)
+                                    }
+                                }else{
+                                    database.child("users").child(user.uid).setValue(User(acct.displayName,acct.email,acct.photoUrl.toString()))
                                 }
                             }
                         }
-                        database.child("users").child(user.uid).addValueEventListener(postListener)
+                        database.child("users").child(user.uid).addListenerForSingleValueEvent(postListener)
                     }
 
 

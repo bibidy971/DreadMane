@@ -16,6 +16,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.UserInfo
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.dread_mane_main.*
 
@@ -34,12 +35,12 @@ class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack, Chap
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dread_mane_main)
 
-
+        database = FirebaseDatabase.getInstance().reference
         authUser = FirebaseAuth.getInstance().currentUser!!
 
+        userInfo = User()
         eMailUser = authUser.email.toString()
         photoUser = authUser.photoUrl
-
         userId = authUser.uid
 
         val name = authUser.displayName?.split(" ")
@@ -47,7 +48,7 @@ class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack, Chap
 
         initFragments(savedInstanceState)
 
-        database = FirebaseDatabase.getInstance().reference
+
 
         /*val database = FirebaseDatabase.getInstance()
         val myRef = database.getReference("message")
@@ -68,11 +69,9 @@ class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack, Chap
             }
         })*/
 
-        //writeNewUser(authUser.uid, authUser.displayName.toString(), authUser.email.toString())
-
-
-
     }
+
+
 
     override fun onStart() {
         super.onStart()
@@ -83,6 +82,9 @@ class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack, Chap
                 val post = dataSnapshot.getValue(User::class.java)
                 if (post?.uriPhoto != null ) {
                     photoUser = Uri.parse(post.uriPhoto)
+                }
+                if (post != null){
+                    userInfo = post
                 }
             }
 
@@ -175,9 +177,10 @@ class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack, Chap
     }
 
     override var userId: String? = null
+    override lateinit var userInfo: User
 
     override fun addRdvButton() {
-        val signInIntent : Intent = Intent(this, AddRdvActivity::class.java)
+        val signInIntent = Intent(this, AddRdvActivity::class.java)
         startActivity(signInIntent)
     }
 
