@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.dreadmane.R
 import com.example.dreadmane.data.User
@@ -16,7 +15,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.UserInfo
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.dread_mane_main.*
 
@@ -25,6 +23,7 @@ class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack, Chap
 
     private lateinit var authUser : FirebaseUser
     private lateinit var database: DatabaseReference
+
 
     companion object {
         const val GOOGLE_ACCOUNT = "google_account"
@@ -38,16 +37,9 @@ class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack, Chap
         database = FirebaseDatabase.getInstance().reference
         authUser = FirebaseAuth.getInstance().currentUser!!
 
-        userInfo = User()
-        eMailUser = authUser.email.toString()
-        photoUser = authUser.photoUrl
-        userId = authUser.uid
-
         val name = authUser.displayName?.split(" ")
-        nameUser = name?.get(0) ?: " "
 
         initFragments(savedInstanceState)
-
 
 
         /*val database = FirebaseDatabase.getInstance()
@@ -75,27 +67,6 @@ class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack, Chap
 
     override fun onStart() {
         super.onStart()
-
-        val postListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // Get Post object and use the values to update the UI
-                val post = dataSnapshot.getValue(User::class.java)
-                if (post?.uriPhoto != null ) {
-                    photoUser = Uri.parse(post.uriPhoto)
-                }
-                if (post != null){
-                    userInfo = post
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
-                // ...
-            }
-        }
-        database.child("users").child(authUser.uid).addValueEventListener(postListener)
-
 
 
     }
@@ -148,8 +119,8 @@ class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack, Chap
     }
 
     private fun signOut() {
-        FirebaseAuth.getInstance().signOut()
 
+        FirebaseAuth.getInstance().signOut()
 
         // [START config_signin]
         // Configure Google Sign In
@@ -168,16 +139,9 @@ class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack, Chap
         finish()
     }
 
-    override var eMailUser: String? = null
-    override var nameUser: String? = null
-    override var photoUser: Uri? = null
-
     override fun disconnection() {
         signOut()
     }
-
-    override var userId: String? = null
-    override lateinit var userInfo: User
 
     override fun addRdvButton() {
         val signInIntent = Intent(this, AddRdvActivity::class.java)
