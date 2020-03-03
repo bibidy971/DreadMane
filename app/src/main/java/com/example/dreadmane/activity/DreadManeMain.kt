@@ -1,12 +1,10 @@
 package com.example.dreadmane.activity
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.dreadmane.R
-import com.example.dreadmane.data.User
+import com.example.dreadmane.data.RdvData
 import com.example.dreadmane.fragments.BlogFragment
 import com.example.dreadmane.fragments.ChapterFragment
 import com.example.dreadmane.fragments.StoreFragment
@@ -15,8 +13,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.*
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.dread_mane_main.*
+import java.io.Serializable
 
 
 class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack, ChapterFragment.MyFragmentCallBack {
@@ -40,37 +40,7 @@ class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack, Chap
         val name = authUser.displayName?.split(" ")
 
         initFragments(savedInstanceState)
-
-
-        /*val database = FirebaseDatabase.getInstance()
-        val myRef = database.getReference("message")
-
-        myRef.setValue("Hello, World!")
-
-        myRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                val value = dataSnapshot.getValue(String::class.java)
-                Log.d(TAG, "Value is: $value")
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException())
-            }
-        })*/
-
     }
-
-
-
-    override fun onStart() {
-        super.onStart()
-
-
-    }
-
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
         when (menuItem.itemId) {
@@ -148,6 +118,11 @@ class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack, Chap
         startActivity(signInIntent)
     }
 
+    override fun infoRdv(rdvData: RdvData) {
+        val signInIntent = Intent(this, InfoRdvActivity::class.java)
+        signInIntent.putExtra("rdv",rdvData as Serializable)
+        startActivity(signInIntent)
+    }
 
 }
 

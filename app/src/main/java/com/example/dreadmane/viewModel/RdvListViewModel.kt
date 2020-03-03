@@ -36,8 +36,6 @@ class RdvListViewModel : ViewModel() {
 
         val childEventListener = object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
-                Log.d(ChapterFragment.TAG, "onChildAdded:" + dataSnapshot.key!!)
-
                 // A new comment has been added, add it to the displayed list
                 val comment = dataSnapshot.getValue(RdvData::class.java)
                 if (comment != null) {

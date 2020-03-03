@@ -120,7 +120,7 @@ class MainActivity : Activity(), View.OnClickListener {
                                         database.child("users").child(user.uid).setValue(post)
                                     }
                                 }else{
-                                    database.child("users").child(user.uid).setValue(User(acct.displayName,acct.email,acct.photoUrl.toString()))
+                                    database.child("users").child(user.uid).setValue(User(acct.displayName,user.uid,acct.email,acct.photoUrl.toString()))
                                 }
                             }
                         }

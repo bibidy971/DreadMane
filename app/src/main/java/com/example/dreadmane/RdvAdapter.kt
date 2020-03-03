@@ -1,9 +1,11 @@
 package com.example.dreadmane
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dreadmane.data.RdvData
@@ -21,11 +23,19 @@ class RdvAdapter(private val items: ArrayList<RdvData>, private val context: Con
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
+        if (items[position].client == null){
+            holder.layoutEtat.setBackgroundColor(Color.GREEN)
+        }else {
+            holder.layoutEtat.setBackgroundColor(Color.RED)
+        }
+
         holder.planingType.text = items[position].date
         holder.rdvInfoDate.text = items[position].heure
 
         val rdv = items[position]
-        holder.bind(rdv, itemClickListener)
+        holder.bind(rdv,itemClickListener)
+
     }
 
 }
@@ -34,8 +44,10 @@ class ViewHolder (view: View) : RecyclerView.ViewHolder(view) {
     // Holds the TextView that will add each animal to
     val planingType: TextView = view.rdv_info
     val rdvInfoDate : TextView = view.rdv_info_date
+    val layoutEtat: LinearLayout = view.layout_rdv_etat
 
-    fun bind(rdv : RdvData , clickListener: OnItemClickListener){
+
+    fun bind(rdv : RdvData, clickListener: OnItemClickListener){
         itemView.setOnClickListener{
             clickListener.onItemClicked(rdv)
         }

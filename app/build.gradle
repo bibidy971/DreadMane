@@ -47,7 +47,9 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:28.1.1'
     implementation 'com.google.firebase:firebase-database:19.2.1'
     implementation 'com.squareup.picasso:picasso:2.71828'
+
     implementation 'com.android.support:recyclerview-v7:28.1.0'
+    implementation 'androidx.recyclerview:recyclerview-selection:1.0.0'
 
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
