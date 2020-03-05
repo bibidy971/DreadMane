@@ -5,8 +5,6 @@ Y
 )app/src/main/res/layout/activity_main.xml,7/6/76b07e40f24cce093536731477540f12e7da3cb6
 [
 +app/src/main/res/layout/fragment_common.xml,c/1/c1c03742addc46dc543c9ce3713065265e4cee0c
-[
-+app/src/main/res/layout/content_add_rdv.xml,8/4/844082a551e722787572f79ea6c63dafaf7aa428
 R
 "app/src/main/res/values/dimens.xml,c/3/c3c1811dec2dbad2deeafb9aad505ca9631da740
 S
@@ -15,8 +13,6 @@ R
 "app/src/main/res/values/styles.xml,f/7/f79cc2688e29fcbc286fda14ae07b27c9e83690f
 P
  app/src/main/AndroidManifest.xml,8/c/8c55c3ccc257e5907959013f99656e4c8ec3903e
-_
-/app/src/main/res/layout/profile_utilisateur.xml,e/3/e358159500260f564c7d363d7058e866d106f601
 d
 4app/src/main/java/com/example/dreadmane/data/User.kt,5/1/51d1d75a3c6e61d7ab70ddfbcbbefe1e8f445504
 q
@@ -43,3 +39,17 @@ Dapp/src/main/java/com/example/dreadmane/viewModel/MyUserViewModel.kt,a/f/af4c0
 app/build.gradle,f/4/f4a01d6a4fcb971362ec00a83903fd3902f52164
 u
 Eapp/src/main/java/com/example/dreadmane/viewModel/RdvListViewModel.kt,b/9/b9c1b125ce645398976438df9aca9447d3cf8f9f
+S
+#.idea/sonarlint/issuestore/index.pb,9/f/9fe84ebb15faf917b7def6236dba604453cc61e0
+s
+Capp/src/main/java/com/example/dreadmane/activity/InfoRdvActivity.kt,c/c/cccb67e1eb81f72b9ae489a32a429a943191d726
+k
+;app/src/main/java/com/example/dreadmane/RdvAdapterProfil.kt,a/d/ad64dcd514b0f80f87f47a6cf082f2c2a9c28f39
+[
++app/src/main/res/layout/dread_mane_main.xml,e/9/e9f0fe514c9592435442fcd07bd031b874b068a9
+X
+(app/src/main/res/layout/planing_list.xml,0/1/0140ce59984951c25d41a2333538ecbc8710a11c
+]
+-app/src/main/res/layout/activity_info_rdv.xml,3/7/37895e6405cada7da405ae7acbdba2dffa01f9d2
+[
++app/src/main/res/layout/activity_google.xml,e/5/e5f5b7fc6a06a05edda8769b0baf2975ef82fea8

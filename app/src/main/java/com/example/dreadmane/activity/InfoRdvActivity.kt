@@ -20,6 +20,7 @@ class InfoRdvActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var user: User
     private lateinit var rdvData: RdvData
     private var rdvlist : ArrayList<RdvData> = arrayListOf()
+    private val modelRdv : RdvListViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,35 +44,24 @@ class InfoRdvActivity : AppCompatActivity(), View.OnClickListener {
             button_supp.visibility = if(user.admin) View.VISIBLE else View.GONE
         })
 
-        val modelRdv : RdvListViewModel by viewModels()
         modelRdv.getRdv().observe(this, Observer<List<RdvData>> { rdvsList ->
             rdvlist = rdvsList as ArrayList<RdvData>
         })
     }
 
     private fun suppRdv(){
-        if (rdvlist.remove(rdvData)){
-            database.child("rdv").setValue(rdvlist)
-            finish()
-        }else{
-            //TODO() : Rdv pas present
-        }
+        modelRdv.deleteRDV(rdvData)
+        finish()
     }
 
     private fun takeRdv(){
-        if (rdvlist.contains(rdvData)){
-            rdvlist[rdvlist.indexOf(rdvData)].client = user.uid
-            database.child("rdv").setValue(rdvlist)
-            finish()
-        }
+        modelRdv.takeRdv(rdvData,user.uid)
+        finish()
     }
 
     private fun annuleRdv(){
-        if (rdvlist.contains(rdvData)){
-            rdvlist[rdvlist.indexOf(rdvData)].client = null
-            database.child("rdv").setValue(rdvlist)
-            finish()
-        }
+        modelRdv.annuleRdv(rdvData)
+        finish()
     }
 
     override fun onClick(p0: View?) {

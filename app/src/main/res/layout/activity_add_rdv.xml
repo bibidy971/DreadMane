@@ -30,15 +30,14 @@
             android:id="@+id/calendarView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minDate="01/01/2020" />
+            android:minDate="01/01/2020"
+            />
 
-        <EditText
-            android:id="@+id/editTextHeure"
-            android:layout_width="match_parent"
+        <TimePicker
+            android:id="@+id/timePicker1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:ems="10"
-            android:inputType="time" />
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/button_add_rdv_admin"

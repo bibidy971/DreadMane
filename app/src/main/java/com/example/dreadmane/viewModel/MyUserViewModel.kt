@@ -20,11 +20,22 @@ class MyUserViewModel : ViewModel() {
         }
     }
 
+    private val mUserList: MutableLiveData<List<User>> by lazy {
+        MutableLiveData<List<User>>().also {
+            userList()
+        }
+
+    }
+
     private var authUser = FirebaseAuth.getInstance().currentUser!!
     private val database: DatabaseReference = FirebaseDatabase.getInstance().reference
 
     fun getUsers(): LiveData<User> {
         return users
+    }
+
+    private fun userList(){
+
     }
 
 

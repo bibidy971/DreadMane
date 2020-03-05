@@ -113,16 +113,23 @@ class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack, Chap
         signOut()
     }
 
+    override fun infoRdvProfil(rdvData: RdvData) {
+        infoRdvIntent(rdvData)
+    }
+
     override fun addRdvButton() {
         val signInIntent = Intent(this, AddRdvActivity::class.java)
         startActivity(signInIntent)
     }
 
     override fun infoRdv(rdvData: RdvData) {
+        infoRdvIntent(rdvData)
+    }
+
+    private fun infoRdvIntent(rdvData: RdvData){
         val signInIntent = Intent(this, InfoRdvActivity::class.java)
         signInIntent.putExtra("rdv",rdvData as Serializable)
-        startActivity(signInIntent)
-    }
+        startActivity(signInIntent)    }
 
 }
 

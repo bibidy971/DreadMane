@@ -40,5 +40,11 @@
         android:textSize="14sp"
         android:layout_gravity="center"/>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/planing_rdv_list_profil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
 
 </LinearLayout>

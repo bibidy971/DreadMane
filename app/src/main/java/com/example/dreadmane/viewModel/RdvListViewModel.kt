@@ -31,6 +31,30 @@ class RdvListViewModel : ViewModel() {
         return mRdvList
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        database.child("rdv").setValue(mRdvArrayList)
+    }
+
+    fun deleteRDV(rdvData: RdvData){
+        mRdvArrayList.remove(rdvData)
+        mRdvList.value = mRdvArrayList
+    }
+
+    fun takeRdv(oldRdvData: RdvData, uid : String){
+        if (mRdvArrayList.contains(oldRdvData)){
+            mRdvArrayList[mRdvArrayList.indexOf(oldRdvData)].client = uid
+            mRdvList.value = mRdvArrayList
+        }
+    }
+
+    fun annuleRdv(rdvData: RdvData){
+        if (mRdvArrayList.contains(rdvData)){
+            mRdvArrayList[mRdvArrayList.indexOf(rdvData)].client = null
+            mRdvList.value = mRdvArrayList
+        }
+    }
+
     private fun loadRdv() {
         // Do an asynchronous operation to fetch users.
 
@@ -38,7 +62,7 @@ class RdvListViewModel : ViewModel() {
             override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
                 // A new comment has been added, add it to the displayed list
                 val comment = dataSnapshot.getValue(RdvData::class.java)
-                if (comment != null) {
+                if (comment != null && !mRdvArrayList.contains(comment)) {
                     mRdvArrayList.add(comment)
                     mRdvList.value = mRdvArrayList
                 }
@@ -52,10 +76,13 @@ class RdvListViewModel : ViewModel() {
                 val newComment = dataSnapshot.getValue(RdvData::class.java)
                 val commentKey = dataSnapshot.key
 
-                if (newComment != null) {
-                    mRdvArrayList[commentKey?.toInt()!!] = newComment
-                    mRdvList.value = mRdvArrayList
-                }
+               if (newComment != null && commentKey != null) {
+                   if (commentKey.toInt() < mRdvArrayList.size && mRdvArrayList[commentKey.toInt()] != newComment) {
+                       mRdvArrayList[commentKey.toInt()] = newComment
+                   }
+                   mRdvList.value = mRdvArrayList
+               }
+
             }
 
             override fun onChildRemoved(dataSnapshot: DataSnapshot) {

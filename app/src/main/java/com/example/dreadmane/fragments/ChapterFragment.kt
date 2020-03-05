@@ -62,13 +62,13 @@ class ChapterFragment : Fragment(), View.OnClickListener, OnItemClickListener {
         super.onActivityCreated(savedInstanceState)
 
         val model : MyUserViewModel by viewModels()
-        model.getUsers().observe(this, Observer<User>{ user ->
+        model.getUsers().observe(this, Observer { user ->
             this.user = user
             mButtonAddRdv.visibility = if(user.admin) View.VISIBLE else View.GONE
         })
 
         val modelRdv : RdvListViewModel by viewModels()
-        modelRdv.getRdv().observe(this, Observer<List<RdvData>> { rdvsList ->
+        modelRdv.getRdv().observe(this, Observer { rdvsList ->
             changeView(rdvsList as ArrayList<RdvData>)
         })
 
