@@ -7,8 +7,6 @@ Y
 +app/src/main/res/layout/fragment_common.xml,c/1/c1c03742addc46dc543c9ce3713065265e4cee0c
 R
 "app/src/main/res/values/dimens.xml,c/3/c3c1811dec2dbad2deeafb9aad505ca9631da740
-S
-#app/src/main/res/values/strings.xml,d/2/d2281fbb3027de2722081a53408dd77628bf080e
 R
 "app/src/main/res/values/styles.xml,f/7/f79cc2688e29fcbc286fda14ae07b27c9e83690f
 P
@@ -53,3 +51,17 @@ X
 -app/src/main/res/layout/activity_info_rdv.xml,3/7/37895e6405cada7da405ae7acbdba2dffa01f9d2
 [
 +app/src/main/res/layout/activity_google.xml,e/5/e5f5b7fc6a06a05edda8769b0baf2975ef82fea8
+_
+/app/src/main/res/layout/profile_utilisateur.xml,e/3/e358159500260f564c7d363d7058e866d106f601
+L
+.idea/codeStyles/Project.xml,6/e/6ecd6000a7b6f4a2884412ff19f74193ed089648
+X
+(gradle/wrapper/gradle-wrapper.properties,f/b/fbe448ebfc3eb2d4e308f6b8b043666f5b57235e
+c
+3app/src/main/java/com/example/dreadmane/MyWorker.kt,f/0/f04e18669c28fe7d2d6343df895e3c620a57cf8e
+u
+Eapp/src/main/java/com/example/dreadmane/MyFirebaseMessagingService.kt,4/2/42545ed0dc74cbd05b439eede552712aad74bce8
+\
+,app/src/main/res/layout/activity_add_rdv.xml,6/5/65bc3a209eff05a7dec20d78f435c03a5c1e4bfb
+S
+#app/src/main/res/values/strings.xml,d/2/d2281fbb3027de2722081a53408dd77628bf080e

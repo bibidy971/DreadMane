@@ -2,19 +2,28 @@ package com.example.dreadmane.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.example.dreadmane.R
 import com.example.dreadmane.data.RdvData
+import com.example.dreadmane.data.User
 import com.example.dreadmane.fragments.BlogFragment
 import com.example.dreadmane.fragments.ChapterFragment
 import com.example.dreadmane.fragments.StoreFragment
+import com.example.dreadmane.viewModel.MyUserViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.dread_mane_main.*
 import java.io.Serializable
 
@@ -23,6 +32,8 @@ class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack, Chap
 
     private lateinit var authUser : FirebaseUser
     private lateinit var database: DatabaseReference
+    private lateinit var user: User
+    private var token: String ? = null
 
 
     companion object {
@@ -39,7 +50,46 @@ class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack, Chap
 
         val name = authUser.displayName?.split(" ")
 
+
+        val model : MyUserViewModel by viewModels()
+        model.getUsers().observe(this, Observer { user ->
+            this.user = user
+            if (token != null && user.tokenFirebaseMessage != token){
+                user.tokenFirebaseMessage = token
+                database.child("users").child(user.uid).setValue(user)
+            }
+        })
+
+        firebaseMessageInit()
         initFragments(savedInstanceState)
+    }
+
+    private fun firebaseMessageInit(){
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w(InfoRdvActivity.TAG, "getInstanceId failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                // Get new Instance ID token
+                token = task.result?.token
+
+                // Log and toast
+                val msg = getString(R.string.msg_token_fmt, token)
+                Log.d(InfoRdvActivity.TAG, msg)
+            })
+
+        FirebaseMessaging.getInstance().isAutoInitEnabled = true
+
+        FirebaseMessaging.getInstance().subscribeToTopic("weather")
+            .addOnCompleteListener { task ->
+                var msg = getString(R.string.msg_subscribed)
+                if (!task.isSuccessful) {
+                    msg = getString(R.string.msg_subscribe_failed)
+                }
+                Log.d(TAG, msg)
+            }
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->

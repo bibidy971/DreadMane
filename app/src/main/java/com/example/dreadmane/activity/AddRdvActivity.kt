@@ -96,7 +96,7 @@ class AddRdvActivity : AppCompatActivity(), View.OnClickListener {
             builder.setPositiveButton(android.R.string.yes) { dialog, which ->
 
                 //TODO : Verifier connexion
-                database.child("rdv").setValue(addDateToListSorted(RdvData(date, time)))
+                database.child("rdv").setValue(addDateToListSorted(RdvData(date = date, heure = time)))
                 Toast.makeText(applicationContext, "C'est bon", Toast.LENGTH_SHORT).show()
 
                 calendarView.visibility = View.VISIBLE
