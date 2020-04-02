@@ -1,22 +1,10 @@
 package com.example.dreadmane.activity
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
-import android.graphics.BitmapFactory
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
+import android.os.MessageQueue
 import android.view.View
-import android.widget.RemoteViews
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.Observer
 import com.example.dreadmane.FcmPush
 import com.example.dreadmane.R
@@ -26,6 +14,9 @@ import com.example.dreadmane.viewModel.MyUserViewModel
 import com.example.dreadmane.viewModel.RdvListViewModel
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.RemoteMessage
 import kotlinx.android.synthetic.main.activity_info_rdv.*
 
 
@@ -42,12 +33,6 @@ class InfoRdvActivity : AppCompatActivity(), View.OnClickListener {
     private var rdvlist : ArrayList<RdvData> = arrayListOf()
     private val modelRdv : RdvListViewModel by viewModels()
     private val model : MyUserViewModel by viewModels()
-
-    lateinit var notificationManager : NotificationManager
-    lateinit var notificationChannel : NotificationChannel
-    lateinit var builder : Notification.Builder
-    private val channelId = "com.example.dreadmane.activity"
-    private val description = "Test notification"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,11 +77,14 @@ class InfoRdvActivity : AppCompatActivity(), View.OnClickListener {
 
 
     private fun sendNotification() {
-        FcmPush.instance.sendMessage("dtutGai0SWY:APA91bEKF4N7au-hSmtAP6xFs1VPX4wfDuhL9v6BYJPiUPm6Y9f33e2BNldVaXZ5ehhJQvRvAUzPyjhUAleusOABdr7IJ51teU7GLZfwiJW_10CM2ufz1a_bBrog6sc2yytsY5l3exl_","Test","DreadMane")
+        //FcmPush.instance.sendMessage("/topics/weather","Test topic","DreadMane")
+        val list = listOf<String>("cD5uMl5cQfSCpbiRMGcitT:APA91bGZ805Ydd0A5x_zBTIBC5AlHorDslGWK3Zqcnbzu_dKELnY5A-ragamnfvX_1D1px_MHbevZKT6xlfLKfIfVa27jymLwWQKzit-UJuQR-StexoTmyOzaMzprWKlcxG0zgzC2sVn","f7Oo3MkSQ1Gu5rIkiPyhy1:APA91bHS4VkhVlqwZ1cjCVC4sKk0Nqdwea0H99RXye6mSjJGsxGKEcC2tyrrDDUNNMUiTzfWJ5DWeAbjA4aZ-wqYaVECqMiata4xI3YEPRmnBU4un6iDWYd4IstOXMXsYBw39MQ4SxZu")
+        //FcmPush.instance.multipleSendMessage(list,"Multiple","Test envoie multiple")
     }
 
 
     private fun annuleRdv(){
+        FcmPush.instance.sendMessage("/topics/admin","Test topic","DreadMane")
         modelRdv.annuleRdv(rdvData)
         finish()
     }

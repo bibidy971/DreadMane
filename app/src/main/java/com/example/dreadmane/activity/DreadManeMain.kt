@@ -58,6 +58,18 @@ class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack, Chap
                 user.tokenFirebaseMessage = token
                 database.child("users").child(user.uid).setValue(user)
             }
+            if (user.admin){
+                FirebaseMessaging.getInstance().subscribeToTopic("admin")
+                    .addOnCompleteListener { task ->
+                        var msg = getString(R.string.msg_subscribed)
+                        if (!task.isSuccessful) {
+                            msg = getString(R.string.msg_subscribe_failed)
+                        }
+                        Log.d(TAG, msg)
+                    }
+            }else{
+                FirebaseMessaging.getInstance().unsubscribeFromTopic("admin")
+            }
         })
 
         firebaseMessageInit()
@@ -82,7 +94,7 @@ class DreadManeMain : AppCompatActivity(),StoreFragment.MyFragmentCallBack, Chap
 
         FirebaseMessaging.getInstance().isAutoInitEnabled = true
 
-        FirebaseMessaging.getInstance().subscribeToTopic("weather")
+        FirebaseMessaging.getInstance().subscribeToTopic("users")
             .addOnCompleteListener { task ->
                 var msg = getString(R.string.msg_subscribed)
                 if (!task.isSuccessful) {

@@ -26,9 +26,9 @@ class MyUserViewModel : ViewModel() {
     }
 
     init {
+        mAllUsers.value = HashMap()
         loadAllUsers()
     }
-
 
 
     fun getUsers(): LiveData<User> {
@@ -82,8 +82,8 @@ class MyUserViewModel : ViewModel() {
                 val newComment = dataSnapshot.getValue(User::class.java)
                 val commentKey = dataSnapshot.key
 
-                if (newComment != null && commentKey != null && mAllUsers.value?.containsKey(commentKey)!!) {
-                    mAllUsers.value?.set(commentKey,newComment)
+                if (newComment != null && commentKey != null) {
+                    mAllUsers.value?.put(commentKey,newComment)
                 }
 
             }

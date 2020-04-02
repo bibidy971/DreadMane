@@ -59,8 +59,6 @@ class MainActivity : Activity(), View.OnClickListener {
 
         database = FirebaseDatabase.getInstance().reference
 
-
-
     }
 
     public override fun onStart() {
