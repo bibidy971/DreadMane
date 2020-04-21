@@ -107,7 +107,7 @@ class MyUserViewModel : ViewModel() {
                 val commentKey = dataSnapshot.key
 
                 if (movedComment != null && commentKey != null && mAllUsers.value?.containsKey(commentKey)!!) {
-                    mAllUsers.value?.set(commentKey,movedComment)
+                    mAllUsers.value?.put(commentKey,movedComment)
                 }
             }
 

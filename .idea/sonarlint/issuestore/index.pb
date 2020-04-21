@@ -7,8 +7,6 @@ Y
 +app/src/main/res/layout/fragment_common.xml,c/1/c1c03742addc46dc543c9ce3713065265e4cee0c
 R
 "app/src/main/res/values/dimens.xml,c/3/c3c1811dec2dbad2deeafb9aad505ca9631da740
-R
-"app/src/main/res/values/styles.xml,f/7/f79cc2688e29fcbc286fda14ae07b27c9e83690f
 P
  app/src/main/AndroidManifest.xml,8/c/8c55c3ccc257e5907959013f99656e4c8ec3903e
 d
@@ -45,10 +43,6 @@ k
 ;app/src/main/java/com/example/dreadmane/RdvAdapterProfil.kt,a/d/ad64dcd514b0f80f87f47a6cf082f2c2a9c28f39
 [
 +app/src/main/res/layout/dread_mane_main.xml,e/9/e9f0fe514c9592435442fcd07bd031b874b068a9
-X
-(app/src/main/res/layout/planing_list.xml,0/1/0140ce59984951c25d41a2333538ecbc8710a11c
-]
--app/src/main/res/layout/activity_info_rdv.xml,3/7/37895e6405cada7da405ae7acbdba2dffa01f9d2
 [
 +app/src/main/res/layout/activity_google.xml,e/5/e5f5b7fc6a06a05edda8769b0baf2975ef82fea8
 _
@@ -61,11 +55,11 @@ c
 3app/src/main/java/com/example/dreadmane/MyWorker.kt,f/0/f04e18669c28fe7d2d6343df895e3c620a57cf8e
 u
 Eapp/src/main/java/com/example/dreadmane/MyFirebaseMessagingService.kt,4/2/42545ed0dc74cbd05b439eede552712aad74bce8
-\
-,app/src/main/res/layout/activity_add_rdv.xml,6/5/65bc3a209eff05a7dec20d78f435c03a5c1e4bfb
 i
 9app/src/main/res/drawable/ic_access_alarms_black_24dp.xml,e/f/ef24f4bea54375b3ae11dc8522376b8efcac4981
 f
 6app/src/main/java/com/example/dreadmane/dto/PushDTO.kt,f/1/f19e45c84f0266ae19e2e7833140b9b971188792
 b
 2app/src/main/java/com/example/dreadmane/FcmPush.kt,1/6/16cffe9bcd65523c8a250dc4322c63cae47bdf41
+n
+>app/src/main/java/com/example/dreadmane/dto/MultiplePushDTO.kt,4/9/4929306623a5f4ddcbf666180e2cbbe484e5a2d2

@@ -27,7 +27,7 @@ class ChapterFragment : Fragment(), View.OnClickListener, OnItemClickListener {
     private lateinit var mCallBack : MyFragmentCallBack
     private lateinit var mButtonAddRdv : Button
     private lateinit var mButtonDeleteRdv : Button
-    private lateinit var user: User
+    private var user: User ? = null
 
     companion object{
         const val TAG = "ChatpterFragment"
@@ -68,18 +68,25 @@ class ChapterFragment : Fragment(), View.OnClickListener, OnItemClickListener {
         })
 
         val modelRdv : RdvListViewModel by viewModels()
-        modelRdv.getRdv().observe(viewLifecycleOwner, Observer { rdvsList ->
+        /*modelRdv.getRdv().observe(viewLifecycleOwner, Observer { rdvsList ->
             changeView(rdvsList as ArrayList<RdvData>)
+        })*/
+
+        modelRdv.getAllRdv().observe(viewLifecycleOwner, Observer { rdvsList ->
+            changeView(ArrayList(rdvsList.values))
         })
 
     }
 
     private fun changeView(listView : ArrayList<RdvData>){
-        if (user.admin){
-            recyclerView.adapter = context?.let { RdvAdapter(listView,it,this) }
-        }else{
-            val newList = listView.filter { s -> s.client.isNullOrBlank() || s.client == user.uid } as ArrayList<RdvData>
-            recyclerView.adapter = context?.let { RdvAdapter(newList,it,this) }
+        if (user != null) {
+            if (user?.admin!!) {
+                recyclerView.adapter = context?.let { RdvAdapter(listView, it, this) }
+            } else {
+                val newList =
+                    listView.filter { s -> s.client.isNullOrBlank() || s.client == user?.uid } as ArrayList<RdvData>
+                recyclerView.adapter = context?.let { RdvAdapter(newList, it, this) }
+            }
         }
     }
 

@@ -8,4 +8,4 @@ import java.io.Serializable
 data class RdvData(var date : String? = null,
                    var heure: String?= null,
                    var client : String? = null,
-                   var confirme : Boolean = false): Serializable
+                   var confirme : String? = null): Serializable
